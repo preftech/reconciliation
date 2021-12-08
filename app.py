@@ -1,4 +1,4 @@
-from flask import Flask, json, request, redirect
+from flask import Flask, redirect
 from pprint import pprint as pp
 from flask_jsonpify import jsonify
 import pandas as pd
@@ -21,6 +21,7 @@ def handle(path=None, id=None) :
     return rs.serve(path, id)
 
 
+# Add an error handler to give JSON errors back to the client
 @app.errorhandler(InvalidUsage)
 def handle_invalid_usage(error):
     response = jsonify(error.to_dict())
@@ -29,7 +30,6 @@ def handle_invalid_usage(error):
 
 @rs.search
 def search_single(reconcile: ReconcileRequest = None):
-    
     # Single query
     return search(reconcile.query)
     

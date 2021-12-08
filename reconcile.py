@@ -121,7 +121,29 @@ class ReconcileService:
         return inner
     
     def search(self, func, *args) ->t.Callable:
+        """
+    @rs.search
+    def my_search(reconcile: ReconcileRequest)
     
+    Will be called with a single search query
+    reconcile.query will contain a string for the entity being searched for
+    expects a return of :
+        { "result" : [
+                        {
+                        "id": <unique id of entity>,
+                        "name": <name of entity>, 
+                        "score": <int of a score>,
+                        "match": <True or False>, # Return True for exact match.
+                        "type":     [
+                                        { # EntityType, ideally as added to the rs above
+                                            "id": et.id,
+                                            "name": et.name
+                                        }
+                                    ]
+                        }              
+                    ]
+        }
+    """
         self.services["search"] = func
         def inner() -> t.Callable:
             return func()
@@ -129,6 +151,27 @@ class ReconcileService:
         return inner        
     
     def search_batch(self, func, *args) ->t.Callable:
+        '''
+        @rs.search_batch
+        def search_batch(reconcile: ReconcileRequest = None):
+
+    By Default OpenRefine will attempt to batch up queries
+    These will be available in reconcile.queries as a dictionary queries key off a query id
+    e.g. 
+        {
+            <query_id_1> : {"query" : "text to search for"} ,
+            <query_id_2> : {"query" : "something else to search for"}
+            ......
+        }
+
+    The expected return is
+    {"results" : {
+                    <query_id_1> : { "result" : .... } # same as single search result
+                    <query_id_2> : { "result" : .....}
+                    ......
+                }
+    }
+        '''
         self.services["search_batch"] = func
         def inner() -> t.Callable:
             return func()
