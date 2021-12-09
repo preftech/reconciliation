@@ -84,13 +84,13 @@ def preview_item(id):
 #
 ##
 df = pd.read_excel("movie_posters.xlsx", engine="openpyxl")
-
+default_search_column = "title"
 
 # Search excel file
 def search(query):
     results = []
     # Find a movie by the title from movie_posters.xlsx
-    match_results = df[df["title"].str.contains(query, na=False)]
+    match_results = df[df[default_search_column].str.contains(query, na=False)]
     num_res = len(match_results)
     
     # Create Results
@@ -116,6 +116,29 @@ def search(query):
 
 # Extend data with additional properties 
 def get_by_id_props(ids, props) :
+    """
+    return data in this format
+    {
+    "rows" : {
+                <entity_id> : {
+                    "<property_id>" : [ { "<str>" : "<property value>"}],
+                    "<property_id2>" : [ { "<str>" : "<property value>"},{ "<str>" : "<property other value>"}]
+                    .....
+                    
+
+                },
+                 <entity_id2> : {
+                    "<property_id>" : [ { "<str>" : "<property value>"}],
+                    "<property_id2>" : [ { "<str>" : "<property value>"},{ "<str>" : "<property other value>"}]
+                    .....
+                    
+
+                },
+                .......
+
+        }
+    }
+    """
     results_df = df[df["id"].isin(ids)]
     results = {}
     for idx, row in results_df.iterrows() :
@@ -136,3 +159,8 @@ def get_by_id(id, column) :
     for idx, row in result_df.iterrows() :
         #print(row)
         return str(row[column])
+    
+    
+    
+if __name__ == '__main__':
+    app.run(host="127.0.0.1", port=5000, debug=True)

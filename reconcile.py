@@ -112,7 +112,40 @@ class ReconcileService:
         self.entities = {}
         
     def extend(self, func, *args) ->t.Callable:
-    
+        '''
+        def extend(reconcile: ReconcileRequest):
+
+        This is the request that handles performing "Add column based on reconciled data"
+        A list of properties and a list of entity ids are passed in 
+        The entity and the value of the propery are expected as results.
+
+        reconcile.extend.ids contains the list of entity ids
+        reconcile.extend.properties contains the list of properties expected
+
+        Return expected
+
+        {
+            "rows" : {
+                        <entity_id> : {
+                            "<property_id>" : [ { "<str>" : "<property value>"}],
+                            "<property_id2>" : [ { "<str>" : "<property value>"},{ "<str>" : "<property other value>"}]
+                            .....
+                            
+
+                        },
+                        <entity_id2> : {
+                            "<property_id>" : [ { "<str>" : "<property value>"}],
+                            "<property_id2>" : [ { "<str>" : "<property value>"},{ "<str>" : "<property other value>"}]
+                            .....
+                            
+
+                        },
+                        .......
+
+            }
+        }
+
+        '''
         self.services["extend"] = func
         self.manifest.extend = ExtendService(self.base_path)
         def inner() -> t.Callable:
@@ -122,28 +155,28 @@ class ReconcileService:
     
     def search(self, func, *args) ->t.Callable:
         """
-    @rs.search
-    def my_search(reconcile: ReconcileRequest)
-    
-    Will be called with a single search query
-    reconcile.query will contain a string for the entity being searched for
-    expects a return of :
-        { "result" : [
-                        {
-                        "id": <unique id of entity>,
-                        "name": <name of entity>, 
-                        "score": <int of a score>,
-                        "match": <True or False>, # Return True for exact match.
-                        "type":     [
-                                        { # EntityType, ideally as added to the rs above
-                                            "id": et.id,
-                                            "name": et.name
-                                        }
-                                    ]
-                        }              
-                    ]
-        }
-    """
+        @rs.search
+        def my_search(reconcile: ReconcileRequest)
+        
+        Will be called with a single search query
+        reconcile.query will contain a string for the entity being searched for
+        expects a return of :
+            { "result" : [
+                            {
+                            "id": <unique id of entity>,
+                            "name": <name of entity>, 
+                            "score": <int of a score>,
+                            "match": <True or False>, # Return True for exact match.
+                            "type":     [
+                                            { # EntityType, ideally as added to the rs above
+                                                "id": et.id,
+                                                "name": et.name
+                                            }
+                                        ]
+                            }              
+                        ]
+            }
+        """
         self.services["search"] = func
         def inner() -> t.Callable:
             return func()
@@ -155,22 +188,22 @@ class ReconcileService:
         @rs.search_batch
         def search_batch(reconcile: ReconcileRequest = None):
 
-    By Default OpenRefine will attempt to batch up queries
-    These will be available in reconcile.queries as a dictionary queries key off a query id
-    e.g. 
-        {
-            <query_id_1> : {"query" : "text to search for"} ,
-            <query_id_2> : {"query" : "something else to search for"}
-            ......
-        }
+        By Default OpenRefine will attempt to batch up queries
+        These will be available in reconcile.queries as a dictionary queries key off a query id
+        e.g. 
+            {
+                <query_id_1> : {"query" : "text to search for"} ,
+                <query_id_2> : {"query" : "something else to search for"}
+                ......
+            }
 
-    The expected return is
-    {"results" : {
-                    <query_id_1> : { "result" : .... } # same as single search result
-                    <query_id_2> : { "result" : .....}
-                    ......
-                }
-    }
+        The expected return is
+        {"results" : {
+                        <query_id_1> : { "result" : .... } # same as single search result
+                        <query_id_2> : { "result" : .....}
+                        ......
+                    }
+        }
         '''
         self.services["search_batch"] = func
         def inner() -> t.Callable:
@@ -187,12 +220,25 @@ class ReconcileService:
         return inner
 
     def preview_wh(self, width, height): 
-        print("Here")
+        '''
+        @rs.preview_wh(200, 200)
+        
+        def preview_item(id):
+
+        This funtion is called when a matched results are hovered over in OpenRefine
+        Openrefine creates an iframe of size width x height where you can display summary data for the entity
+        Arg: 
+            id - the entity id
+
+        Return : 
+            HTML 
+
+        '''
+
         
         self.manifest.preview = PreviewService(self.base_path, "/preview/{{id}}", width, height)
         def preview(func, *args) -> t.Callable:
-            print("Here 2")
-            print(self)
+        
             self.services["preview"] = func        
             def inner() -> t.Callable:
                 return func()

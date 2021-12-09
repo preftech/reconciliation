@@ -9,10 +9,20 @@ Reconciliation will provide
 * Handler for Reconciliation JSON Protocol
 * Function decorators for
   * Search
+    * Required
+    * Used to map incoming data to an entity id in your data
   * Search in batch mode
+    * Required
+    * Same as search but used for batches for performance
   * Extend 
+    * Optional - but kind of useless without it
+    * Used to add additional columns / fields to end users data
   * Preview
+    * Optional - really handy for users
+    * Used as a hover preview method, by creating an iframe in openrefine
   * View
+    * Optional - really useful
+    * Used to show the entity in a browser
 
 ## Why use Open Refines reconciliation
 OpenRefine provides a desktop/browser tool for data management and curation. This tool provides an excel like interface for cleaning, scripting abilities to augment data, enhancing data with the ability to fetch data over the internet and supliment the data you already have.
@@ -106,34 +116,95 @@ def my_search_batch(reconcile: ReconcileRequest):
     '''
 
 @rs.extend
-@rs.preview_wh
+'''
+def extend(reconcile: ReconcileRequest):
+
+This is the request that handles performing "Add column based on reconciled data"
+A list of properties and a list of entity ids are passed in 
+The entity and the value of the propery are expected as results.
+
+reconcile.extend.ids contains the list of entity ids
+reconcile.extend.properties contains the list of properties expected
+
+Return expected
+
+{
+    "rows" : {
+                <entity_id> : {
+                    "<property_id>" : [ { "<str>" : "<property value>"}],
+                    "<property_id2>" : [ { "<str>" : "<property value>"},{ "<str>" : "<property other value>"}]
+                    .....
+                    
+
+                },
+                 <entity_id2> : {
+                    "<property_id>" : [ { "<str>" : "<property value>"}],
+                    "<property_id2>" : [ { "<str>" : "<property value>"},{ "<str>" : "<property other value>"}]
+                    .....
+                    
+
+                },
+                .......
+
+    }
+}
+
+'''
+@rs.preview_wh(width, height) # in pixels
+'''
+def preview_item(id):
+
+This funtion is called when a matched results are hovered over in OpenRefine
+Openrefine creates an iframe of size width x height where you can display summary data for the entity
+Arg: 
+    id - the entity id
+
+Return : 
+    HTML 
+
+'''
+
+
+
 @rs.view
+'''
+def view_item(id):
+
+This function is called in openrefine when a user clicks a matched entity 
+You can return html, redirect, a file download, anything that is browser compatible 
+
+Arg: 
+    id = the entity id
+
+Return: 
+    Browser compatible content 
+
+'''
 
 ```
 # Reconciliation Example
-Provided 
+Start by checking out openrefine at https://openrefine.org/ and downloading the latest version of the OpenRefine software
+The example provided solves a simple problem, you have a spreadsheet of The Guardian's 2010 Greatest Movies of all time, 
+however it's mising the movies posters. 
+This sample app will load a spreadsheet call movie_posters.xlsx which contains some of the movie posters.
+
+First start this app, assume you've cloned the [reconciliation github repo](https://github.com/preftech/reconciliation), setup your [virtualenv](https://sourabhbajaj.com/mac-setup/Python/virtualenv.html) or [conda](https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html) for python
+
+```
+pip install -r requirements.txt
+python app.py
+```
+This should start the reconciliation service at http://127.0.0.1:5000/reconcile/
+
+Next launch OpenRefine and create a new project with the guardian_2010_greatest_films_of_all_time.csv
 
 
-reconcile
-    -> search
-
-discover properties
-    -> type
-
-reconcile -> ids + properties 
-
-
-query
-querys
-extend
-    ids
-    properties
 
 ## Attributions
 A thanks has to go out to the following for data used in the example 
-* Babu Thomas 
+* Babu Thomas (@babu-thomas)
   * MovieLens project
   * https://github.com/babu-thomas/movielens-posters
-* Owen Temples 
+* Owen Temples - https://www.linkedin.com/in/owentemple
   * Guardian's 2010 Greatest Movies of all Time 
   * https://data.world/owentemple/greatest-films-of-all-time
