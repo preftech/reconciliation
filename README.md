@@ -197,6 +197,10 @@ python app.py
 This should start the reconciliation service at http://127.0.0.1:5000/reconcile/
 
 Next launch OpenRefine and create a new project with the guardian_2010_greatest_films_of_all_time.csv
+![Create New Project](https://github.com/preftech/reconciliation/blob/main/docs/images/create_new.png?raw=true)
+
+Select next > Create Project (defaults on this page are fine)
+
 
 
 
