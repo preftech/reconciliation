@@ -229,7 +229,9 @@ et.properties.append(Property("poster", "Poster URL"))
 .....
 ````
 
-
+At this stage you will see your spreadsheet and a status toast showing you how much matching has occurred. 
+Once Complete you will see a set of Facet / Filters appear on the left handside and some additional data in the title column.
+![Matching Screen](https://github.com/preftech/reconciliation/blob/main/docs/images/matching.png?raw=true)
 
 
 
