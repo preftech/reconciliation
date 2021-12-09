@@ -188,7 +188,11 @@ The example provided solves a simple problem, you have a spreadsheet of The Guar
 however it's mising the movies posters. 
 This sample app will load a spreadsheet call movie_posters.xlsx which contains some of the movie posters.
 
+
+Below I bring you through the steps of reconciling data in OpenRefine, this is not meant to be a tutorial on OpenRefine, there are way to many capabilities available in it and resources online that cover that. This is a very quick walk though on how to use this example with OpenRefine.
+
 First start this app, assume you've cloned the [reconciliation github repo](https://github.com/preftech/reconciliation), setup your [virtualenv](https://sourabhbajaj.com/mac-setup/Python/virtualenv.html) or [conda](https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html) for python
+
 
 ### Step 1
 ```
@@ -204,7 +208,7 @@ Next launch OpenRefine and create a new project with the guardian_2010_greatest_
 Select next > Create Project (defaults on this page are fine)
 You should have a spreadsheet page with the list of movies
 
-### Step 3
+### Step 3 Matching
 Next step lets reconcile the movie titles against our reconciliation service.
 Click the dropdown menu next to "title" > Reconcile > Start Reconciling
 ![Start Reconciling](https://github.com/preftech/reconciliation/blob/main/docs/images/start_reconciling.png?raw=true)
@@ -234,6 +238,34 @@ Once Complete you will see a set of Facet / Filters appear on the left handside 
 ![Matching Screen](https://github.com/preftech/reconciliation/blob/main/docs/images/matching.png?raw=true)
 
 
+As you can see from the Facet / Filter we matched 36 movies this is the field "match" from our @rs.search/@rs.search_batch method.
+In this example if we had single result from the data and name matched we declared it a match.
+
+You can select either matched if you just want to work with fully matched data, or none if you want to work on data that isn't fully matched. 
+
+Let's take look at "Nosferatu" on row 3
+There are 2 possible movies in the results the 1922 original or a remake in 1986. Hovering over them calls the @rs.preview method. In out example we return html with the movie poster as an image. 
+A reviewer can now select which movie is the correct one, if there are duplicates in the data, then it can be applied to all other cells with the same title.
+
+The judgement score is a sliding filter based on the field "score" from @rs.search / @rs.search_batch
+In our case we divided 100 / No. Matches so a score of 100 = 1 match, 50 = 2 matches, 3 = 33.3 and so on...
+
+By default blanks; 0 matches are included, you can uncheck this box to exclude them, and use the slider to work through matching data and prioritizing it.
+
+### Step 4 Extend Data
+At this stage we have data in OpenRefine reconciled / matched to the data in our service as best as we can, we have had humna judgement clean it up and now we want to add fields to the matched data. 
+
+Click the dropdown menu next to title > Edit Column > Add Columns from Reconciled Values
+![Add Columns](https://github.com/preftech/reconciliation/blob/main/docs/images/add_columns.png?raw=true) 
+
+
+The next screen that pops up, will display the available properties that you have configured from the EntityType properties. 
+If haven't filtered the rows from the Facet/Filter panel, you may have 'non-reconciled' rows showing up here. If you don't want that hit escape and in judgement scores simply uncheck the "blanks" checkbox, and repeat this step.
+![Add Columns](https://github.com/preftech/reconciliation/blob/main/docs/images/add_columns.png?raw=true)
+
+You can now select 1 or more properties to add to your data, and click ok.
+This will now call the @rs.extend method of your code. 
+OpenRefine will now fetch the properties you've requested and proceed to add them as columns to the entities that have **been matched**.
 
 
 
