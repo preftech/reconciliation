@@ -2,7 +2,7 @@ from flask import Flask, redirect
 from pprint import pprint as pp
 from flask_jsonpify import jsonify
 import pandas as pd
-from reconcile import EntityType, InvalidUsage, Property, ReconcileRequest, ReconcileService
+from reconciliation.reconcile import EntityType, InvalidUsage, Property, ReconcileRequest, ReconcileService
 
 app = Flask(__name__)
 

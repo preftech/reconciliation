@@ -43,7 +43,7 @@ pip install reconciliation
 This is a flask based app that allows you to control how you route, authenticate, log etc.. A full example exists in the app.py file
 
 ```python
-from reconcile import EntityType, InvalidUsage, Property, ReconcileRequest, ReconcileService
+from reconcililiation import EntityType, InvalidUsage, Property, ReconcileRequest, ReconcileService
 
 # Create a flask app
 app = Flask(__name__)
