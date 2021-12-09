@@ -8,14 +8,14 @@ with open('README.md') as f:
 setup(
     name = 'reconciliation',         
     packages = ['reconciliation'],   
-    version = '0.2',
+    version = '0.3',
     license='MIT',
     description = 'An OpenRefine Reconciliation Framework for Python',
     long_description=long_description,
     long_description_content_type="text/markdown",
     author = 'patrick oleary',                   # Type in your name
     author_email = 'techops@preftech.com',      # Type in your E-Mail
-    url = 'https://github.com/preftech/pyreconciliation',   # Provide either the link to your github or to your website
+    url = 'https://github.com/preftech/reconciliation',   # Provide either the link to your github or to your website
     keywords = ['reconcile', 'reconciliation', 'openrefine', 'cocoda'],   # Keywords that define your package best
     install_requires=[
                         "Flask==2.0.2",
