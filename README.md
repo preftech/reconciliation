@@ -190,17 +190,29 @@ This sample app will load a spreadsheet call movie_posters.xlsx which contains s
 
 First start this app, assume you've cloned the [reconciliation github repo](https://github.com/preftech/reconciliation), setup your [virtualenv](https://sourabhbajaj.com/mac-setup/Python/virtualenv.html) or [conda](https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html) for python
 
+### Step 1
 ```
 pip install -r requirements.txt
 python app.py
 ```
 This should start the reconciliation service at http://127.0.0.1:5000/reconcile/
 
+### Step 2
 Next launch OpenRefine and create a new project with the guardian_2010_greatest_films_of_all_time.csv
 ![Create New Project](https://github.com/preftech/reconciliation/blob/main/docs/images/create_new.png?raw=true)
 
 Select next > Create Project (defaults on this page are fine)
+You should have a spreadsheet page with the list of movies
 
+### Step 3
+Next step lets reconcile the movie titles against our reconciliation service.
+Click the dropdown menu next to "title" > Reconcile > Start Reconciling
+![Start Reconciling](https://github.com/preftech/reconciliation/blob/main/docs/images/start_reconciling.png?raw=true)
+
+Next Add the reconcilation service, you will see an Add Standard Service button on the bottom left
+Type in http://127.0.0.1:5000/reconcile/ **Ensure you include the trailing slash**
+
+![Add Service](https://github.com/preftech/reconciliation/blob/main/docs/images/add_service.png?raw=true)
 
 
 
