@@ -209,10 +209,29 @@ Next step lets reconcile the movie titles against our reconciliation service.
 Click the dropdown menu next to "title" > Reconcile > Start Reconciling
 ![Start Reconciling](https://github.com/preftech/reconciliation/blob/main/docs/images/start_reconciling.png?raw=true)
 
-Next Add the reconcilation service, you will see an Add Standard Service button on the bottom left
+Next Add the reconcilation service, you will see an >Add Standard Service button on the bottom left
 Type in http://127.0.0.1:5000/reconcile/ **Ensure you include the trailing slash**
+> Add Service
 
 ![Add Service](https://github.com/preftech/reconciliation/blob/main/docs/images/add_service.png?raw=true)
+
+Again the defaults should be fine here.
+Under the covers this calls http://127.0.0.1:5000/reconcile/ and receives back a list of services you have enabled
+This services are linked to the EntityType you added to ReconcileService and @rs.* decorators in your code.
+```
+et = EntityType("Movie", "/movie")
+et.properties.append(Property("imdb", "IMDB URL"))
+et.properties.append(Property("poster", "Poster URL"))
+```
+
+```
+@rs.view
+.....
+````
+
+
+
+
 
 
 
