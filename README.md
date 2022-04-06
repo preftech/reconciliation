@@ -274,6 +274,6 @@ A thanks has to go out to the following for data used in the example
 * Babu Thomas (@babu-thomas)
   * MovieLens project
   * https://github.com/babu-thomas/movielens-posters
-* Owen Temples - https://www.linkedin.com/in/owentemple
+* Owen Temples - https://owentemple.com/
   * Guardian's 2010 Greatest Movies of all Time 
   * https://data.world/owentemple/greatest-films-of-all-time
