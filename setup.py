@@ -18,7 +18,7 @@ setup(
     url = 'https://github.com/preftech/reconciliation',   # Provide either the link to your github or to your website
     keywords = ['reconcile', 'reconciliation', 'openrefine', 'cocoda'],   # Keywords that define your package best
     install_requires=[
-                        "Flask==2.0.2",
+                        "Flask==2.3.2",
                         "Flask-Jsonpify==1.5.0",
                         "marshmallow==3.14.1"
                     ],
